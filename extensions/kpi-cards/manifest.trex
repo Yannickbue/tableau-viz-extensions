@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Source manifest. {{BASE_URL}} is filled in by tools/make_trex.py, which writes
+<!-- Source manifest. The BASE_URL placeholder in the url is filled in by tools/make_trex.py, which writes
      trex/local/kpi-cards.trex (localhost) and trex/cloud/kpi-cards.trex (GitHub Pages).
      Bump extension-version on every change you publish. -->
 <manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">

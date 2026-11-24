@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Source manifest. {{BASE_URL}} is filled in by tools/make_trex.py.
+<!-- Source manifest. The BASE_URL placeholder in the url is filled in by tools/make_trex.py.
      Bump extension-version on every change you publish. -->
 <manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
   <worksheet-extension id="com.bleckmann.viz.__ID__" extension-version="1.0.0">

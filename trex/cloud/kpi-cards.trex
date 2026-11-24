@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Source manifest. https://YOUR-GITHUB-USER.github.io/tableau-viz-extensions is filled in by tools/make_trex.py, which writes
+<!-- Source manifest. The BASE_URL placeholder in the url is filled in by tools/make_trex.py, which writes
      trex/local/kpi-cards.trex (localhost) and trex/cloud/kpi-cards.trex (GitHub Pages).
      Bump extension-version on every change you publish. -->
 <manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
@@ -10,7 +10,7 @@
     <author name="Bleckmann BI" email="noreply@bleckmann.com" organization="Bleckmann" website="https://www.bleckmann.com"/>
     <min-api-version>1.11</min-api-version>
     <source-location>
-      <url>https://YOUR-GITHUB-USER.github.io/tableau-viz-extensions/extensions/kpi-cards/index.html</url>
+      <url>https://yannickbue.github.io/tableau-viz-extensions/extensions/kpi-cards/index.html</url>
     </source-location>
     <icon/>
     <encoding id="label">
