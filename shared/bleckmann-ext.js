@@ -203,13 +203,20 @@ window.BX = (function () {
       const ctx = { worksheet, rows: [], enc: {}, selected: new Set(), root };
       let pending = null;
 
+      // Debounced render. rAF alone is not enough: browsers withhold rAF for hidden or
+      // throttled frames (a hidden dashboard tab, headless Chrome), and a pending rAF
+      // that never fires would block every later render. Whichever fires first wins.
+      const doRender = () => {
+        if (!pending) return;
+        cancelAnimationFrame(pending.raf);
+        clearTimeout(pending.timer);
+        pending = null;
+        try { render(ctx); } catch (e) { console.error(e); empty(root, 'Render error: ' + e.message); }
+        document.body.dataset.bxRendered = String(Number(document.body.dataset.bxRendered || 0) + 1);
+      };
       ctx.rerender = () => {
         if (pending) return;
-        pending = requestAnimationFrame(() => {
-          pending = null;
-          try { render(ctx); } catch (e) { console.error(e); empty(root, 'Render error: ' + e.message); }
-          document.body.dataset.bxRendered = String(Number(document.body.dataset.bxRendered || 0) + 1);
-        });
+        pending = { raf: requestAnimationFrame(doRender), timer: setTimeout(doRender, 100) };
       };
 
       const refresh = async () => {

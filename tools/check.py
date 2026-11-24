@@ -11,7 +11,8 @@ extensions/<name>/index.html?mock=fixtures/<fixture> in headless Chrome
 Case fields (all optional except fixture):
     fixture   file in extensions/<name>/fixtures/
     click     CSS selector to click after the first render (selection tests)
-    count     {"css-class": n}  number of elements carrying that class
+    count     {"css-class": n}  number of elements whose class list contains that class
+              (every element, so a status class on both a bar and a label counts twice)
     text      ["..."]            strings that must appear in the visible text
     absent    ["..."]            strings that must not appear
     calls     {"apiMethod": firstArg}  first argument of the last call to that
@@ -80,14 +81,24 @@ def run_case(name, case, port, profile, shots):
         q['click'] = case['click']
     url = f'http://127.0.0.1:{port}/extensions/{name}/index.html?' + urllib.parse.urlencode(q)
     w, h = case.get('size', [900, 560])
-    out = chrome([f'--window-size={w},{h}', '--dump-dom', url], profile)
-    dom = Dom()
-    dom.feed(out.stdout)
+    retried = False
+    for attempt in range(2):
+        out = chrome([f'--window-size={w},{h}', '--dump-dom', url], profile)
+        dom = Dom()
+        dom.feed(out.stdout)
+        if dom.calls is not None:
+            break
+        retried = True  # Chrome occasionally exits before the page settles; try once more
     text = ' '.join(' '.join(dom.text).split())
     problems = []
     if dom.calls is None:
-        problems.append('page never finished (no #bx-calls) - check the browser console: '
+        problems.append('page never finished twice (no #bx-calls) - a JS error before the first render? Open: '
                         f'"{CFG["chrome"]}" --auto-open-devtools-for-tabs "{url}"')
+    for c in dom.calls or []:
+        if c['name'] == 'test:timeout':
+            problems.append(f'timed out waiting for {c["args"][0]} - render() threw or never ran')
+        if c['name'] == 'test:click' and not c['args'][1]:
+            problems.append(f'click selector matched nothing: {c["args"][0]}')
     for cls, n in case.get('count', {}).items():
         got = dom.classes.get(cls, 0)
         if got != n:
@@ -111,7 +122,7 @@ def run_case(name, case, port, profile, shots):
         problems_suffix = f'  [{shot.relative_to(ROOT)}]'
     else:
         problems_suffix = ''
-    label = case['fixture'] + (f" click {case['click']}" if case.get('click') else '')
+    label = case['fixture'] + (f" click {case['click']}" if case.get('click') else '') + (' (retried)' if retried else '')
     print(('PASS ' if not problems else 'FAIL ') + f'{name}: {label}{problems_suffix}')
     for p in problems:
         print('     - ' + p)
@@ -119,6 +130,7 @@ def run_case(name, case, port, profile, shots):
 
 
 def main(argv):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')  # cp1252 console + "≤" etc.
     shots = '--shots' in argv
     only = {a for a in argv if not a.startswith('--')}
     srv = serve.start(0, quiet=True)

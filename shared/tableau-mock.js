@@ -111,17 +111,25 @@
   // so it survives chrome --dump-dom.
   const params = new URLSearchParams(window.location.search);
   const rendered = () => Number(document.body && document.body.dataset.bxRendered || 0);
-  const waitFor = (pred) => new Promise(resolve => {
-    const t = setInterval(() => { if (pred()) { clearInterval(t); resolve(); } }, 20);
+  // Bounded wait: the call log is always written, and a stalled render shows up as a
+  // 'test:timeout' entry instead of a page that never finishes.
+  const waitFor = (pred, what, ms = 4000) => new Promise(resolve => {
+    const start = Date.now();
+    const t = setInterval(() => {
+      if (pred()) { clearInterval(t); resolve(); } else if (Date.now() - start > ms) {
+        clearInterval(t); log('test:timeout', [what]); resolve();
+      }
+    }, 20);
   });
   window.addEventListener('load', async () => {
-    await waitFor(() => rendered() >= 1);
+    await waitFor(() => rendered() >= 1, 'first render');
     const sel = params.get('click');
     if (sel) {
+      const before = rendered();
       const target = document.querySelector(sel);
       log('test:click', [sel, !!target]);
       if (target) target.click();
-      await waitFor(() => rendered() >= 2);
+      await waitFor(() => rendered() > before, 'render after click');
     }
     await new Promise(r => setTimeout(r, 50));
     const pre = document.createElement('pre');

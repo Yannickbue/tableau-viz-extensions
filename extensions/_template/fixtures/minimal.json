@@ -1,0 +1,5 @@
+{
+  "encodings": {"value": ["SUM(Units)"]},
+  "columns": ["SUM(Units)"],
+  "rows": [[5160]]
+}

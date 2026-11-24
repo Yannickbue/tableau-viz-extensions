@@ -1,11 +1,16 @@
 [
   {
-    "fixture": "sample.json",
+    "fixture": "full.json",
     "count": {"ext-row": 3},
     "text": ["Footwear", "3,400"]
   },
   {
-    "fixture": "sample.json",
+    "fixture": "minimal.json",
+    "count": {"ext-row": 1},
+    "text": ["Units", "5,160"]
+  },
+  {
+    "fixture": "full.json",
     "click": "[data-row='Apparel']",
     "count": {"is-selected": 1},
     "calls": {"selectTuplesAsync": [2]}
