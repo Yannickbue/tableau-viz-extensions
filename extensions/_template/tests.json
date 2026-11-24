@@ -1,0 +1,13 @@
+[
+  {
+    "fixture": "sample.json",
+    "count": {"ext-row": 3},
+    "text": ["Footwear", "3,400"]
+  },
+  {
+    "fixture": "sample.json",
+    "click": "[data-row='Apparel']",
+    "count": {"is-selected": 1},
+    "calls": {"selectTuplesAsync": [2]}
+  }
+]

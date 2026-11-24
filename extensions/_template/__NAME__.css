@@ -1,0 +1,9 @@
+.ext-list { margin: 0; padding: 10px; list-style: none; }
+.ext-row {
+  display: flex; justify-content: space-between; gap: 12px;
+  padding: 4px 6px; border-bottom: 1px solid var(--bx-panel); cursor: pointer;
+}
+.ext-row:hover { background: var(--bx-panel); }
+.ext-row.is-selected { box-shadow: inset 3px 0 0 var(--bx-red); }
+.ext-list.has-selection .ext-row:not(.is-selected) { opacity: 0.45; }
+.ext-row .v { font-weight: 700; font-variant-numeric: tabular-nums; }

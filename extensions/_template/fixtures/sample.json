@@ -1,0 +1,5 @@
+{
+  "encodings": {"label": ["Category"], "value": ["SUM(Units)"]},
+  "columns": ["Category", "SUM(Units)"],
+  "rows": [["Footwear", 1200], ["Apparel", 3400], ["Accessories", 560]]
+}

@@ -1,0 +1,66 @@
+{
+ "encodings": {
+  "label": [
+   "Site"
+  ],
+  "value": [
+   "AVG(Pick Error Rate)"
+  ],
+  "compare": [
+   "AVG(Pick Error Rate PY)"
+  ],
+  "target": [
+   "AVG(Error Target)"
+  ],
+  "lowerbetter": [
+   "MAX(Lower Is Better)"
+  ],
+  "detail": [
+   "SUM(Picks)",
+   "SUM(Errors)"
+  ]
+ },
+ "columns": [
+  "Site",
+  "AVG(Pick Error Rate)",
+  "AVG(Pick Error Rate PY)",
+  "AVG(Error Target)",
+  "MAX(Lower Is Better)",
+  "SUM(Picks)",
+  "SUM(Errors)"
+ ],
+ "formats": {
+  "AVG(Pick Error Rate)": "pct",
+  "AVG(Pick Error Rate PY)": "pct",
+  "AVG(Error Target)": "pct"
+ },
+ "rows": [
+  [
+   "Site North",
+   0.0021,
+   0.003,
+   0.0025,
+   1,
+   412000,
+   865
+  ],
+  [
+   "Site South",
+   0.0034,
+   0.0029,
+   0.0025,
+   1,
+   288000,
+   979
+  ],
+  [
+   "Site East",
+   0.0025,
+   0.0025,
+   0.0025,
+   1,
+   150000,
+   375
+  ]
+ ]
+}

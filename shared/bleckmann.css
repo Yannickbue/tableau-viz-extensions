@@ -1,0 +1,49 @@
+/* Bleckmann base styles for viz extensions. Colours match the bleckmann-tableau
+   skill's validated palette (references/design.md). */
+:root {
+  --bx-red: #d20c14;        /* brand accent / status red */
+  --bx-dark: #545960;       /* secondary text, axes */
+  --bx-ink: #292929;        /* primary text */
+  --bx-grid: #dcdddf;       /* gridlines, borders */
+  --bx-panel: #f3f4f4;      /* panel / track background */
+  --bx-context: #8e9196;    /* de-emphasised marks */
+  --bx-green: #6c8265;      /* status green */
+  --bx-amber: #f3ba44;      /* status amber */
+  --bx-amber-ink: #8a5a00;  /* amber is too light for text; use this for amber labels */
+  --bx-font: Calibri, "Open Sans", "Segoe UI", Arial, sans-serif;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #fff;
+  color: var(--bx-ink);
+  font-family: var(--bx-font);
+  font-size: 13px;
+}
+
+#content {
+  position: fixed;
+  inset: 0;
+  overflow: auto;
+}
+
+.bx-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  color: var(--bx-dark);
+  text-align: center;
+}
+
+.bx-notice {
+  margin: 8px;
+  padding: 6px 10px;
+  border-left: 3px solid var(--bx-amber);
+  background: var(--bx-panel);
+  color: var(--bx-dark);
+  font-size: 12px;
+}

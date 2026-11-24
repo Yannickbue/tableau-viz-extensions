@@ -1,0 +1,15 @@
+{
+ "encodings": {
+  "value": [
+   "SUM(Units Shipped)"
+  ]
+ },
+ "columns": [
+  "SUM(Units Shipped)"
+ ],
+ "rows": [
+  [
+   48213
+  ]
+ ]
+}
