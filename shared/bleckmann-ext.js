@@ -18,12 +18,15 @@ window.BX = (function () {
 
   // ---- data -------------------------------------------------------------
 
+  // Rows also carry rows.columns = [{ fieldName, dataType }] for type checks.
   async function getRows (worksheet) {
     const reader = await worksheet.getSummaryDataReaderAsync(undefined, { ignoreSelection: true });
     const rows = [];
+    rows.columns = [];
     try {
       for (let p = 0; p < reader.pageCount; p++) {
         const page = await reader.getPageAsync(p);
+        if (p === 0) rows.columns = page.columns.map(c => ({ fieldName: c.fieldName, dataType: c.dataType }));
         for (const values of page.data) {
           const row = { __tupleId: rows.length + 1 };
           for (const col of page.columns) row[col.fieldName] = values[col.index];
@@ -37,13 +40,38 @@ window.BX = (function () {
   }
 
   // { encodingId: [field, ...] } - only encodings that have a field on them.
+  // Built-in tiles (Detail, Tooltip) are keyed by e.id, or by e.type if they have no id.
   async function getEncodings (worksheet) {
     const spec = await worksheet.getVisualSpecificationAsync();
     const map = {};
     if (spec.activeMarksSpecificationIndex < 0) return map;
     const card = spec.marksSpecifications[spec.activeMarksSpecificationIndex];
-    for (const e of card.encodings) (map[e.id] = map[e.id] || []).push(e.field);
+    for (const e of card.encodings) {
+      const key = e.id || e.type;
+      (map[key] = map[key] || []).push(e.field);
+    }
     return map;
+  }
+
+  // Is this field a date/time? Column dataType first, values as a fallback.
+  function isTemporal (rows, f) {
+    if (!f) return false;
+    const col = (rows.columns || []).find(c => c.fieldName === f.name);
+    if (col && col.dataType) return /date|time/i.test(col.dataType);
+    const v = rows.length && rows[0][f.name] ? rows[0][f.name].value : null;
+    return v instanceof Date || (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}/.test(v));
+  }
+
+  // Fields on the built-in Detail tile. A viz extension may declare at most 4 custom
+  // encodings, so extra inputs go on Detail. If the visual spec does not report the
+  // Detail tile, fall back to every data column that no other tile claims.
+  function detailFields (ctx, customIds) {
+    if (ctx.enc.detail) return ctx.enc.detail;
+    const claimed = new Set();
+    for (const [id, fs] of Object.entries(ctx.enc)) {
+      if (customIds.includes(id) || id === 'tooltip') fs.forEach(f => claimed.add(f.name));
+    }
+    return (ctx.rows.columns || []).filter(c => !claimed.has(c.fieldName)).map(c => ({ name: c.fieldName }));
   }
 
   // Selected marks come back as data rows, not tupleIds: match them on every column.
@@ -237,7 +265,7 @@ window.BX = (function () {
   }
 
   return {
-    COLORS, run, getRows, getEncodings, getSelectedTupleIds,
+    COLORS, run, getRows, getEncodings, getSelectedTupleIds, isTemporal, detailFields,
     field, fields, cell, num, text, sortKey, cleanName, groupBy,
     clickSelect, hover, el, sparkline, empty
   };

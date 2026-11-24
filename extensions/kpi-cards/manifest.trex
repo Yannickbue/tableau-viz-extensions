@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Source manifest. The BASE_URL placeholder in the url is filled in by tools/make_trex.py, which writes
      trex/local/kpi-cards.trex (localhost) and trex/cloud/kpi-cards.trex (GitHub Pages).
-     Bump extension-version on every change you publish. -->
+     Bump extension-version on every change you publish.
+     Tableau allows at most 4 custom encodings; more inputs go on the built-in Detail tile. -->
 <manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
-  <worksheet-extension id="com.bleckmann.viz.kpicards" extension-version="1.0.0">
+  <worksheet-extension id="com.bleckmann.viz.kpicards" extension-version="2.0.0">
     <default-locale>en_US</default-locale>
     <name resource-id="name"/>
-    <description>KPI cards with target status, delta versus a comparison period, sparkline and detail lines</description>
+    <description>KPI cards with target status, delta versus a comparison value, sparkline and detail lines</description>
     <author name="Bleckmann BI" email="noreply@bleckmann.com" organization="Bleckmann" website="https://www.bleckmann.com"/>
     <min-api-version>1.11</min-api-version>
     <source-location>
       <url>{{BASE_URL}}/extensions/kpi-cards/index.html</url>
     </source-location>
     <icon/>
-    <encoding id="label">
-      <display-name>Card</display-name>
+    <encoding id="card">
+      <display-name>Card / Date</display-name>
       <role-spec>
         <role-type>discrete-dimension</role-type>
+        <role-type>continuous-dimension</role-type>
       </role-spec>
-      <fields max-count="1"/>
+      <fields max-count="2"/>
+      <tooltip>One text field = one card per member. One date field = sparkline over time. Both are allowed.</tooltip>
     </encoding>
     <encoding id="value">
       <display-name>Value</display-name>
@@ -29,26 +32,18 @@
         <role-type>continuous-measure</role-type>
       </role-spec>
       <fields max-count="1"/>
+      <tooltip>The headline number</tooltip>
     </encoding>
     <encoding id="target">
-      <display-name>Target</display-name>
+      <display-name>Target, Amber</display-name>
       <data-spec>
         <data-type>numeric</data-type>
       </data-spec>
       <role-spec>
         <role-type>continuous-measure</role-type>
       </role-spec>
-      <fields max-count="1"/>
-    </encoding>
-    <encoding id="threshold">
-      <display-name>Amber threshold</display-name>
-      <data-spec>
-        <data-type>numeric</data-type>
-      </data-spec>
-      <role-spec>
-        <role-type>continuous-measure</role-type>
-      </role-spec>
-      <fields max-count="1"/>
+      <fields max-count="2"/>
+      <tooltip>First field = target. Optional second field = amber threshold; amber above target means lower is better.</tooltip>
     </encoding>
     <encoding id="compare">
       <display-name>Compare</display-name>
@@ -59,28 +54,7 @@
         <role-type>continuous-measure</role-type>
       </role-spec>
       <fields max-count="1"/>
-    </encoding>
-    <encoding id="trend">
-      <display-name>Trend (date)</display-name>
-      <role-spec>
-        <role-type>discrete-dimension</role-type>
-        <role-type>continuous-dimension</role-type>
-      </role-spec>
-      <fields max-count="1"/>
-    </encoding>
-    <encoding id="lowerbetter">
-      <display-name>Lower is better (1/0)</display-name>
-      <data-spec>
-        <data-type>numeric</data-type>
-      </data-spec>
-      <role-spec>
-        <role-type>continuous-measure</role-type>
-      </role-spec>
-      <fields max-count="1"/>
-    </encoding>
-    <encoding id="detail">
-      <display-name>Detail lines</display-name>
-      <fields max-count="4"/>
+      <tooltip>Delta is shown against this value, for example the previous period</tooltip>
     </encoding>
   </worksheet-extension>
   <resources>

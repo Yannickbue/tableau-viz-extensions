@@ -34,7 +34,13 @@
   }
 
   function dataTable (rowIndexes) {
-    const columns = fixture.columns.map((fieldName, index) => ({ fieldName, index }));
+    const kindOf = (c) => (fixture.formats || {})[fixture.columns[c]];
+    const columns = fixture.columns.map((fieldName, index) => {
+      const k = kindOf(index);
+      const sample = fixture.rows.length ? fixture.rows[0][index] : null;
+      const dataType = k === 'month' || k === 'day' ? 'date' : typeof sample === 'number' ? 'float' : 'string';
+      return { fieldName, index, dataType };
+    });
     const data = rowIndexes.map(i => fixture.rows[i].map((v, c) => {
       const kind = (fixture.formats || {})[fixture.columns[c]] || (typeof v === 'number' ? 'number' : 'text');
       return { value: v, nativeValue: v, formattedValue: format(v, kind) };
@@ -60,8 +66,11 @@
     },
     async getVisualSpecificationAsync () {
       const encodings = [];
+      // Built-in tiles are reported by type (no custom id) - an assumption until verified
+      // in Tableau; BX.detailFields falls back to unclaimed columns either way.
       for (const [id, names] of Object.entries(fixture.encodings || {})) {
-        for (const name of names) encodings.push({ id, field: { name } });
+        const builtIn = id === 'detail' || id === 'tooltip';
+        for (const name of names) encodings.push(builtIn ? { type: id, field: { name } } : { id, field: { name } });
       }
       return { activeMarksSpecificationIndex: 0, marksSpecifications: [{ encodings }] };
     },

@@ -1,18 +1,14 @@
 {
  "encodings": {
-  "label": [
-   "Client"
-  ],
-  "trend": [
+  "card": [
+   "Client",
    "MONTH(Ship Date)"
   ],
   "value": [
    "SUM(Units Shipped)"
   ],
   "target": [
-   "SUM(Target Units)"
-  ],
-  "threshold": [
+   "SUM(Target Units)",
    "SUM(Amber Units)"
   ],
   "detail": [

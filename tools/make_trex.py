@@ -41,10 +41,27 @@ def validate(name, text):
     url = ext.findtext('m:source-location/m:url', default='', namespaces=NS)
     if not url.endswith(f'/extensions/{name}/index.html'):
         errors.append(f'url should end with /extensions/{name}/index.html, got {url}')
+    # Tableau's content model for <worksheet-extension>, quoted from its FD722608 error:
+    # (default-locale,name,description,author,min-api-version,source-location,icon,
+    #  permissions?,context-menu?,disable-sorting-ui?,encoding*) - in this order.
+    order = ['default-locale', 'name', 'description', 'author', 'min-api-version',
+             'source-location', 'icon', 'permissions', 'context-menu', 'disable-sorting-ui', 'encoding']
+    tags = [c.tag.split('}')[-1] for c in ext if isinstance(c.tag, str)]
+    unknown = [t for t in tags if t not in order]
+    if unknown:
+        errors.append(f'elements Tableau does not allow in <worksheet-extension>: {unknown}')
+    ranks = [order.index(t) for t in tags if t in order]
+    if ranks != sorted(ranks):
+        errors.append(f'children out of order: {tags}; required order is {order}')
     seen = set()
     encodings = ext.findall('m:encoding', NS)
     if not encodings:
         errors.append('no <encoding> elements: the Marks card would have nothing to drop fields on')
+    if len(encodings) > 4:
+        # Documented limit ("up to four custom encodings"); Tableau rejects the file with
+        # FD722608 "element 'encoding' is not allowed for content model".
+        errors.append(f'{len(encodings)} encodings; Tableau allows at most 4 custom encodings. '
+                      'Combine roles (max-count 2) or use the built-in Detail tile.')
     for enc in encodings:
         eid = enc.get('id', '')
         if not re.fullmatch(r'[a-z][a-z0-9]*', eid):

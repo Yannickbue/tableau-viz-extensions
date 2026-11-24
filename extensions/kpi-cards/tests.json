@@ -1,26 +1,102 @@
 [
   {
     "fixture": "full.json",
-    "count": {"kpi-card": 3, "bx-spark": 3, "kpi-bar": 3, "kpi-details": 3, "bx-notice": 0},
-    "text": ["Brand A", "Brand B", "Brand C", "15,400", "On target", "Near target", "Off target",
-             "Oct 2026", "vs Sep 2026", "Target 15,000", "Orders per FTE"]
+    "count": {
+      "kpi-card": 3,
+      "bx-spark": 3,
+      "kpi-bar": 3,
+      "kpi-details": 3,
+      "bx-notice": 0
+    },
+    "text": [
+      "Brand A",
+      "Brand B",
+      "Brand C",
+      "15,400",
+      "On target",
+      "Near target",
+      "Off target",
+      "Oct 2026",
+      "vs Sep 2026",
+      "Target 15,000",
+      "Orders per FTE"
+    ]
   },
   {
     "fixture": "full.json",
     "click": "[data-card='Brand B']",
-    "count": {"is-selected": 1, "has-selection": 1},
-    "calls": {"selectTuplesAsync": [7, 8, 9, 10, 11, 12]}
+    "count": {
+      "is-selected": 1,
+      "has-selection": 1
+    },
+    "calls": {
+      "selectTuplesAsync": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    }
   },
   {
     "fixture": "minimal.json",
-    "count": {"kpi-card": 1, "kpi-bar": 0, "bx-spark": 0, "kpi-delta": 0, "kpi-details": 0},
-    "text": ["48,213", "Units Shipped"],
-    "size": [320, 200]
+    "count": {
+      "kpi-card": 1,
+      "kpi-bar": 0,
+      "bx-spark": 0,
+      "kpi-delta": 0,
+      "kpi-details": 0
+    },
+    "text": [
+      "48,213",
+      "Units Shipped"
+    ],
+    "size": [
+      320,
+      200
+    ]
   },
   {
     "fixture": "lower-better.json",
-    "count": {"kpi-card": 3, "good": 1, "bad": 1, "flat": 1, "bx-spark": 0},
-    "text": ["Site North", "0.2%", "-30%", "vs Pick Error Rate PY", "On target", "Off target", "Picks", "Errors"],
-    "absent": ["Near target"]
+    "count": {
+      "kpi-card": 3,
+      "good": 1,
+      "bad": 1,
+      "flat": 1,
+      "bx-spark": 0
+    },
+    "text": [
+      "Site North",
+      "0.2%",
+      "-30%",
+      "vs Pick Error Rate PY",
+      "On target",
+      "Off target",
+      "Picks",
+      "Errors"
+    ],
+    "absent": [
+      "Near target"
+    ]
+  },
+  {
+    "fixture": "detail-fallback.json",
+    "count": {
+      "kpi-card": 3,
+      "kpi-details": 3,
+      "bx-spark": 0
+    },
+    "text": [
+      "On target",
+      "Near target",
+      "Off target",
+      "Trucks",
+      "120"
+    ],
+    "absent": [
+      "Dock Amber"
+    ]
   }
 ]

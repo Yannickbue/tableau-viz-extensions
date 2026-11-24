@@ -1,0 +1,44 @@
+{
+ "encodings": {
+  "card": [
+   "Site"
+  ],
+  "value": [
+   "AVG(Dock Time Hrs)"
+  ],
+  "target": [
+   "AVG(Dock Target)",
+   "AVG(Dock Amber)"
+  ]
+ },
+ "columns": [
+  "Site",
+  "AVG(Dock Time Hrs)",
+  "AVG(Dock Target)",
+  "AVG(Dock Amber)",
+  "SUM(Trucks)"
+ ],
+ "rows": [
+  [
+   "Site North",
+   3.1,
+   4,
+   5,
+   120
+  ],
+  [
+   "Site South",
+   4.6,
+   4,
+   5,
+   95
+  ],
+  [
+   "Site East",
+   5.8,
+   4,
+   5,
+   60
+  ]
+ ]
+}

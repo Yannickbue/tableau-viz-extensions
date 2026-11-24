@@ -1,21 +1,19 @@
 {
  "encodings": {
-  "label": [
+  "card": [
    "Site"
   ],
   "value": [
    "AVG(Pick Error Rate)"
   ],
-  "compare": [
-   "AVG(Pick Error Rate PY)"
-  ],
   "target": [
    "AVG(Error Target)"
   ],
-  "lowerbetter": [
-   "MAX(Lower Is Better)"
+  "compare": [
+   "AVG(Pick Error Rate PY)"
   ],
   "detail": [
+   "MAX(Lower Is Better)",
    "SUM(Picks)",
    "SUM(Errors)"
   ]

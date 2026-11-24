@@ -1,18 +1,38 @@
-// Bleckmann KPI Cards - one card per member of the "Card" encoding.
+// Bleckmann KPI Cards - one card per member of the text field on "Card / Date".
 //
-// Encodings (ids from manifest.trex):
-//   label       dimension  one card per member; none = a single card
-//   value       measure    the headline number (required)
-//   target      measure    status + progress bar against target
-//   threshold   measure    amber band: between threshold and target = amber
-//   compare     measure    delta vs this value (e.g. previous period)
-//   trend       date dim   sparkline; headline/target/compare come from the LAST point,
-//                          and without a compare field the delta is vs the previous point
-//   lowerbetter measure    1 = lower is better (status and delta colours flip)
-//   detail      any, <= 4  extra "name: value" lines at the bottom of the card
+// Tableau allows only 4 custom encodings (ids from manifest.trex):
+//   card     dims, <= 2  a text field = one card per member (none = a single card);
+//                        a date field = sparkline. Told apart by data type.
+//   value    measure     the headline number (required)
+//   target   measure x2  1st = target (status + progress bar), 2nd = amber threshold
+//   compare  measure     delta vs this value; without it, with a date, vs the previous point
+// Built-in Detail tile:
+//   measures            extra "name: value" lines at the bottom of the card
+//   "Lower is better"   a field with that name and value 1 flips status/delta colours
+// Lower is better is also implied when the amber threshold is above the target.
+// With a date, headline/target/compare come from the LAST point.
 (function () {
   'use strict';
-  const { el, num, text, field, fields, cleanName } = BX;
+  const { el, num, text, field, cleanName } = BX;
+  const CUSTOM = ['card', 'value', 'target', 'compare'];
+  const isLowerFlag = (f) => /lower\s*is\s*better/i.test(cleanName(f));
+
+  // Resolve the 4 custom encodings + Detail into the roles the card uses.
+  function roles (ctx) {
+    const { enc, rows } = ctx;
+    const dims = enc.card || [];
+    const details = BX.detailFields(ctx, CUSTOM);
+    return {
+      label: dims.find(f => !BX.isTemporal(rows, f)),
+      trend: dims.find(f => BX.isTemporal(rows, f)),
+      value: field(enc, 'value'),
+      target: field(enc, 'target', 0),
+      threshold: field(enc, 'target', 1),
+      compare: field(enc, 'compare'),
+      lowerFlag: details.find(isLowerFlag),
+      details: details.filter(f => !isLowerFlag(f)).slice(0, 4)
+    };
+  }
 
   function status (v, target, threshold, lower) {
     if (v === null || target === null) return null;
@@ -34,11 +54,10 @@
       `${arrow} ${pctText} `, el('span', { class: 'kpi-delta-label' }, label));
   }
 
-  function card (ctx, title, rows) {
-    const { enc } = ctx;
-    const fValue = field(enc, 'value'); const fTrend = field(enc, 'trend');
-    const fTarget = field(enc, 'target'); const fThreshold = field(enc, 'threshold');
-    const fCompare = field(enc, 'compare'); const fLower = field(enc, 'lowerbetter');
+  function card (ctx, R, title, rows) {
+    const fValue = R.value; const fTrend = R.trend;
+    const fTarget = R.target; const fThreshold = R.threshold;
+    const fCompare = R.compare; const fLower = R.lowerFlag;
 
     const ordered = fTrend ? [...rows].sort((a, b) => {
       const x = BX.sortKey(a, fTrend); const y = BX.sortKey(b, fTrend);
@@ -48,9 +67,11 @@
     const prev = ordered.length > 1 ? ordered[ordered.length - 2] : null;
 
     const v = num(cur, fValue);
-    const lower = num(cur, fLower) === 1;
     const target = num(cur, fTarget);
-    const st = status(v, target, num(cur, fThreshold), lower);
+    const threshold = num(cur, fThreshold);
+    const lower = num(cur, fLower) === 1 ||
+      (target !== null && threshold !== null && threshold > target);
+    const st = status(v, target, threshold, lower);
 
     let d = null;
     if (fCompare) d = delta(v, num(cur, fCompare), lower, 'vs ' + cleanName(fCompare));
@@ -82,10 +103,9 @@
       parts.push(BX.sparkline(ordered.map(r => num(r, fValue))));
     }
 
-    const details = fields(enc, 'detail');
-    if (details.length) {
+    if (R.details.length) {
       parts.push(el('ul', { class: 'kpi-details' },
-        details.map(f => el('li', null,
+        R.details.map(f => el('li', null,
           el('span', { class: 'k' }, cleanName(f)), el('span', { class: 'v' }, text(cur, f))))));
     }
 
@@ -101,26 +121,26 @@
   }
 
   function render (ctx) {
-    const { enc, rows, root } = ctx;
-    if (!field(enc, 'value')) {
-      return BX.empty(root, 'Drag a measure onto Value. Add a dimension on Card for one card per member.');
+    const { rows, root } = ctx;
+    const R = roles(ctx);
+    if (!R.value) {
+      return BX.empty(root, 'Drag a measure onto Value. Add a text field on Card / Date for one card per member, a date for a sparkline.');
     }
     if (!rows.length) return BX.empty(root, 'No data for the current filters.');
 
-    const fLabel = field(enc, 'label');
-    const groups = fLabel ? BX.groupBy(rows, [fLabel]) : new Map([[cleanName(field(enc, 'value')), rows]]);
+    const groups = R.label ? BX.groupBy(rows, [R.label]) : new Map([[cleanName(R.value), rows]]);
 
-    // Without a trend field each card should be exactly one row. More rows means a
-    // dimension sits on Detail lines and splits the data: say so instead of guessing.
-    const split = !field(enc, 'trend') && [...groups.values()].some(g => g.length > 1);
+    // Without a date each card should be exactly one row. More rows means a dimension
+    // sits on Detail and splits the data: say so instead of guessing.
+    const split = !R.trend && [...groups.values()].some(g => g.length > 1);
 
     const grid = el('div', { class: 'kpi-grid' + (ctx.selected.size ? ' has-selection' : '') },
-      [...groups].map(([title, groupRows]) => card(ctx, title, groupRows)));
+      [...groups].map(([title, groupRows]) => card(ctx, R, title, groupRows)));
     // replaceChildren turns null into the text "null", so build the list explicitly.
     const nodes = [grid];
     if (split) {
       nodes.unshift(el('div', { class: 'bx-notice' },
-        'Some cards have more than one row. Put dimensions on Card or Trend only; Detail lines should be measures.'));
+        'Some cards have more than one row. Put dimensions on Card / Date only; fields on Detail should be measures.'));
     }
     root.replaceChildren(...nodes);
   }
