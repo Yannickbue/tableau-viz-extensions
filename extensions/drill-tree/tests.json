@@ -1,0 +1,40 @@
+[
+  {
+    "fixture": "full.json",
+    "count": {"dt-node": 5, "is-root": 1, "dt-link": 4, "on-path": 0, "dt-toggle": 5, "bx-notice": 0, "dt-legend": 0},
+    "text": ["Total", "Region", "Units", "37.9k", "100%", "North", "13.9k", "37%", "South", "West", "East"],
+    "absent": ["Site North", "Brand A", "Negative value"]
+  },
+  {
+    "fixture": "full.json",
+    "click": "[data-node='North']",
+    "count": {"dt-node": 7, "is-selected": 1, "dt-link": 6},
+    "text": ["Site", "Site North", "Site Hub N"],
+    "absent": ["Site South", "Brand A"],
+    "calls": {"selectTuplesAsync": [1, 2, 3, 4, 5, 6, 7, 8]}
+  },
+  {
+    "fixture": "minimal.json",
+    "count": {"dt-node": 3, "dt-more": 0, "dt-legend": 0, "bx-notice": 0},
+    "text": ["Orders", "7k", "B2C", "5,160", "74%", "B2B", "1,840", "Channel"],
+    "absent": ["+"],
+    "size": [560, 260]
+  },
+  {
+    "fixture": "minimal.json",
+    "click": "[data-node='B2B']",
+    "count": {"is-selected": 1},
+    "calls": {"selectTuplesAsync": [2]}
+  },
+  {
+    "fixture": "edge.json",
+    "count": {"dt-node": 13, "dt-more": 1, "dt-legend": 1, "neg": 1},
+    "text": ["Brand with a very long name", "Returns adjustment", "Negative value", "smaller members not shown"],
+    "size": [700, 720]
+  },
+  {
+    "fixture": "avg.json",
+    "count": {"bx-notice": 1, "dt-node": 3},
+    "text": ["AVG(Lead time)", "use SUM or COUNT"]
+  }
+]

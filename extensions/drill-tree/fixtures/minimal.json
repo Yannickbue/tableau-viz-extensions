@@ -1,0 +1,24 @@
+{
+ "encodings": {
+  "levels": [
+   "Channel"
+  ],
+  "value": [
+   "SUM(Orders)"
+  ]
+ },
+ "columns": [
+  "Channel",
+  "SUM(Orders)"
+ ],
+ "rows": [
+  [
+   "B2C",
+   5160
+  ],
+  [
+   "B2B",
+   1840
+  ]
+ ]
+}

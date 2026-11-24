@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Source manifest. The BASE_URL placeholder in the url is filled in by tools/make_trex.py.
+     Bump extension-version on every change you publish. -->
+<manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
+  <worksheet-extension id="com.bleckmann.viz.drilltree" extension-version="1.0.0">
+    <default-locale>en_US</default-locale>
+    <name resource-id="name"/>
+    <description>Drill down tree</description>
+    <author name="Bleckmann BI" email="noreply@bleckmann.com" organization="Bleckmann" website="https://www.bleckmann.com"/>
+    <min-api-version>1.11</min-api-version>
+    <source-location>
+      <url>{{BASE_URL}}/extensions/drill-tree/index.html</url>
+    </source-location>
+    <icon/>
+    <encoding id="levels">
+      <display-name>Levels (drill order)</display-name>
+      <role-spec>
+        <role-type>discrete-dimension</role-type>
+      </role-spec>
+      <fields max-count="6"/>
+    </encoding>
+    <encoding id="value">
+      <display-name>Value</display-name>
+      <data-spec>
+        <data-type>numeric</data-type>
+      </data-spec>
+      <role-spec>
+        <role-type>continuous-measure</role-type>
+      </role-spec>
+      <fields max-count="1"/>
+    </encoding>
+  </worksheet-extension>
+  <resources>
+    <resource id="name">
+      <text locale="en_US">Bleckmann Drill down tree</text>
+    </resource>
+  </resources>
+</manifest>

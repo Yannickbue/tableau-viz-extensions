@@ -1,0 +1,112 @@
+{
+ "encodings": {
+  "levels": [
+   "Client"
+  ],
+  "value": [
+   "SUM(Net units)"
+  ]
+ },
+ "columns": [
+  "Client",
+  "SUM(Net units)"
+ ],
+ "rows": [
+  [
+   "Brand 01",
+   342
+  ],
+  [
+   "Brand 02",
+   2416
+  ],
+  [
+   "Brand 03",
+   607
+  ],
+  [
+   "Brand 04",
+   1014
+  ],
+  [
+   "Brand 05",
+   2683
+  ],
+  [
+   "Brand 06",
+   2669
+  ],
+  [
+   "Brand 07",
+   2487
+  ],
+  [
+   "Brand 08",
+   353
+  ],
+  [
+   "Brand 09",
+   2463
+  ],
+  [
+   "Brand 10",
+   2498
+  ],
+  [
+   "Brand 11",
+   1724
+  ],
+  [
+   "Brand 12",
+   303
+  ],
+  [
+   "Brand 13",
+   1005
+  ],
+  [
+   "Brand 14",
+   290
+  ],
+  [
+   "Brand 15",
+   2380
+  ],
+  [
+   "Brand 16",
+   645
+  ],
+  [
+   "Brand 17",
+   1286
+  ],
+  [
+   "Brand 18",
+   1816
+  ],
+  [
+   "Brand 19",
+   690
+  ],
+  [
+   "Brand 20",
+   2314
+  ],
+  [
+   "Brand with a very long name that will not fit in a node",
+   2500
+  ],
+  [
+   null,
+   400
+  ],
+  [
+   "Returns adjustment",
+   -1800
+  ],
+  [
+   "Brand no value",
+   null
+  ]
+ ]
+}

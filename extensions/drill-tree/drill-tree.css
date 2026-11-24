@@ -1,0 +1,49 @@
+.dt-wrap { padding: 10px 12px; }
+
+.dt-canvas { position: relative; }
+.dt-links { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.dt-link { fill: none; stroke: var(--bx-grid); stroke-width: 1.5; }
+.dt-link.on-path { stroke: var(--bx-dark); stroke-width: 2; }
+
+.dt-head { position: absolute; top: 0; overflow: hidden; white-space: nowrap; }
+.dt-head-name { font-weight: 700; color: var(--bx-ink); text-overflow: ellipsis; overflow: hidden; }
+.dt-head-sub { font-size: 12px; color: var(--bx-dark); text-overflow: ellipsis; overflow: hidden; }
+
+.dt-node {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 2px 4px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.dt-node:hover { background: var(--bx-panel); }
+.dt-node:focus-visible { outline: 2px solid var(--bx-dark); outline-offset: 0; }
+.dt-node.is-selected { border-color: var(--bx-dark); }
+
+.dt-label { display: flex; gap: 6px; min-width: 0; font-size: 12px; line-height: 15px; }
+.dt-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.dt-pct { flex: none; color: var(--bx-dark); }
+.dt-node.on-path .dt-name, .dt-node.is-root .dt-name { font-weight: 700; }
+
+.dt-barline { display: flex; align-items: center; gap: 6px; }
+.dt-track { flex: 1; height: 10px; background: var(--bx-panel); border-radius: 2px; overflow: hidden; }
+.dt-bar { display: block; height: 100%; background: var(--bx-context); }
+.dt-node.on-path .dt-bar, .dt-node.is-root .dt-bar { background: var(--bx-dark); }
+.dt-node.neg .dt-bar { background: var(--bx-red); }
+.dt-value { flex: none; min-width: 42px; text-align: right; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.dt-node.neg .dt-value { color: var(--bx-red); }
+.dt-toggle { flex: none; width: 10px; font-weight: 700; color: var(--bx-dark); text-align: center; }
+
+.dt-more { position: absolute; padding: 12px 4px 0; font-size: 12px; font-style: italic; color: var(--bx-dark); }
+
+.dt-legend { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 12px; color: var(--bx-dark); }
+.dt-swatch { width: 10px; height: 10px; background: var(--bx-red); }

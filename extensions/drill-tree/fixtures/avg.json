@@ -1,0 +1,24 @@
+{
+ "encodings": {
+  "levels": [
+   "Site"
+  ],
+  "value": [
+   "AVG(Lead time)"
+  ]
+ },
+ "columns": [
+  "Site",
+  "AVG(Lead time)"
+ ],
+ "rows": [
+  [
+   "Site North",
+   2.4
+  ],
+  [
+   "Site South",
+   3.1
+  ]
+ ]
+}

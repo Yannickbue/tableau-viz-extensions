@@ -4,11 +4,14 @@
 
 Uses the bleckmann-tableau skill (cwtwb) to write the workbook and bundle the CSV,
 so it opens in Desktop without Tableau Cloud or Snowflake. Data is invented:
-4 brands x 2 sites x 12 months.
+4 brands x 2 sites x 12 months; each brand belongs to a segment, so
+Segment > Client > Site > Month is a 4-level hierarchy for the drill tree.
 
 Sheets:
-  Data check        reference crosstab to compare the extension's numbers with
-  KPI cards - 1..3  empty sheets: set Marks type > Add Extension > kpi-cards there
+  Data check          reference crosstab to compare the extension's numbers with
+  KPI cards - 1..3    empty sheets: set Marks type > Add Extension > kpi-cards there
+  Drill tree check    Segment / Client / Site crosstab to compare the tree with
+  Drill tree - 1..2   empty sheets: set Marks type > Add Extension > drill-tree there
 """
 import csv
 import datetime as dt
@@ -31,6 +34,7 @@ CSV = OUT_DIR / 'kpi_test_data.csv'
 OUT = OUT_DIR / 'Viz extension test.twbx'
 
 BRANDS = {'Brand A': 15000, 'Brand B': 9500, 'Brand C': 7000, 'Brand D': 4000}
+SEGMENTS = {'Brand A': 'Fashion', 'Brand B': 'Fashion', 'Brand C': 'Lifestyle', 'Brand D': 'Sportswear'}
 SITES = {'Site North': 0.55, 'Site South': 0.45}
 ERROR_RATE = {'Site North': 0.0021, 'Site South': 0.0031}   # North on target, South off
 
@@ -54,12 +58,12 @@ def write_csv():
                 errors = round(picks * ERROR_RATE[site] * rnd.uniform(0.8, 1.2))
                 rows.append([brand, site, m.isoformat(), units, units_py,
                              round(target * share), round(target * share * 0.9),
-                             orders, picks, errors])
+                             orders, picks, errors, SEGMENTS[brand]])
     OUT_DIR.mkdir(exist_ok=True)
     with CSV.open('w', newline='', encoding='utf-8') as f:
         w = csv.writer(f)
         w.writerow(['Client', 'Site', 'Month', 'Units shipped', 'Units shipped PY',
-                    'Target units', 'Amber units', 'Orders', 'Picks', 'Pick errors'])
+                    'Target units', 'Amber units', 'Orders', 'Picks', 'Pick errors', 'Segment'])
         w.writerows(rows)
 
 
@@ -84,6 +88,10 @@ def main():
             ['SUM(Units shipped)', 'SUM(Target units)', 'SUM(Amber units)', 'SUM(Orders)', 'AGG(Pick error rate)'])
     for i in (1, 2, 3):
         ed.add_worksheet('KPI cards - %d' % i)
+    S.table(ed, ds, 'Drill tree check', 'Drill tree check (compare with the tree)', ['Segment', 'Client', 'Site'],
+            ['SUM(Units shipped)'])
+    for i in (1, 2):
+        ed.add_worksheet('Drill tree - %d' % i)
 
     adapter.fix_datasource_instance_order(ed)
     assert not adapter.dangling_datasource_refs(ed)

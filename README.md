@@ -7,6 +7,7 @@ Tableau and the viewer's browser.
 | Extension | What it draws |
 |---|---|
 | `kpi-cards` | One card per member: value, status vs target (green/amber/red), delta vs compare or previous period, sparkline, detail lines |
+| `drill-tree` | Decomposition tree: total of a measure split level by level (Levels = up to 6 dimensions in drill order); click a node to open the next level and select its marks |
 
 ## Layout
 

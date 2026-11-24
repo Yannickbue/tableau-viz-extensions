@@ -1,0 +1,167 @@
+{
+ "encodings": {
+  "levels": [
+   "Region",
+   "Site",
+   "Client"
+  ],
+  "value": [
+   "SUM(Units)"
+  ]
+ },
+ "columns": [
+  "Region",
+  "Site",
+  "Client",
+  "SUM(Units)"
+ ],
+ "formats": {
+  "SUM(Units)": "number"
+ },
+ "rows": [
+  [
+   "North",
+   "Site North",
+   "Brand A",
+   1526
+  ],
+  [
+   "North",
+   "Site North",
+   "Brand B",
+   817
+  ],
+  [
+   "North",
+   "Site North",
+   "Brand C",
+   1817
+  ],
+  [
+   "North",
+   "Site North",
+   "Brand D",
+   2866
+  ],
+  [
+   "North",
+   "Site Hub N",
+   "Brand A",
+   397
+  ],
+  [
+   "North",
+   "Site Hub N",
+   "Brand B",
+   496
+  ],
+  [
+   "North",
+   "Site Hub N",
+   "Brand C",
+   3563
+  ],
+  [
+   "North",
+   "Site Hub N",
+   "Brand D",
+   2394
+  ],
+  [
+   "South",
+   "Site South",
+   "Brand A",
+   585
+  ],
+  [
+   "South",
+   "Site South",
+   "Brand B",
+   1697
+  ],
+  [
+   "South",
+   "Site South",
+   "Brand C",
+   2587
+  ],
+  [
+   "South",
+   "Site South",
+   "Brand D",
+   437
+  ],
+  [
+   "West",
+   "Site West",
+   "Brand A",
+   3926
+  ],
+  [
+   "West",
+   "Site West",
+   "Brand B",
+   2278
+  ],
+  [
+   "West",
+   "Site West",
+   "Brand C",
+   1079
+  ],
+  [
+   "West",
+   "Site West",
+   "Brand D",
+   353
+  ],
+  [
+   "West",
+   "Site Coast",
+   "Brand A",
+   552
+  ],
+  [
+   "West",
+   "Site Coast",
+   "Brand B",
+   1976
+  ],
+  [
+   "West",
+   "Site Coast",
+   "Brand C",
+   1912
+  ],
+  [
+   "West",
+   "Site Coast",
+   "Brand D",
+   486
+  ],
+  [
+   "East",
+   "Site East",
+   "Brand A",
+   1185
+  ],
+  [
+   "East",
+   "Site East",
+   "Brand B",
+   571
+  ],
+  [
+   "East",
+   "Site East",
+   "Brand C",
+   2457
+  ],
+  [
+   "East",
+   "Site East",
+   "Brand D",
+   1938
+  ]
+ ]
+}
